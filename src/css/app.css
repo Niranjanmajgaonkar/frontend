@@ -1,0 +1,82 @@
+/* For aligning the navbar links and spacing them out */
+.navnamesparant {
+    display: flex;
+    justify-content: flex-end; /* Aligns the links to the right */
+    align-items: center; /* Ensures vertical alignment */
+  }
+  
+  .navnames {
+    text-decoration: none; /* Removes underline */
+    color: white; /* Text color */
+    margin-left: 40px; /* Adds spacing between the links */
+  }
+  
+  .navnames:hover {
+    color: lightgray; /* Optional: Adjust hover color */
+  }
+  
+  /* Optional: Adjust hover effect on the navbar links */
+  .navnames:hover {
+    text-decoration: underline; /* Adds underline on hover */
+  }
+  
+  /* Optional: Adjust the right margin for the last link (Account) */
+  .navnames.me-5 {
+    margin-right: 20px; /* You can adjust this value */
+  }
+  .cartimg{
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+ 
+  }
+  .cart{
+    margin-top: 20px;
+  }
+
+  .Account{
+    width: 35px;
+    height: 35px;
+  }
+  .category{
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+  }
+
+  .home{
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+  }
+
+  .surchicon{
+    width: 35px;
+    background-color: white;
+    height: 33px;
+
+  }
+
+  .surchicon:hover{
+border: 5px solid white;
+    cursor: pointer;
+  }
+
+  /* Ensure the dropdown and its items match the desired color */
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.dropdown-item {
+  color: black; /* default color */
+  padding: 10px;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1; /* light hover effect */
+  color: #333; /* darken text on hover */
+}
+
+.navnames:hover {
+  color: #f8f9fa; /* light color for nav items on hover */
+}
