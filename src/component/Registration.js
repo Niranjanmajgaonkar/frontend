@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import "../css/registration.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 
-export default function Registraion() {
+export default function Registration() {
 const[firstname,setFirstName]=useState('');
 const[lastname,setlastname]=useState('');
 const[password,setpassword]=useState('');
@@ -14,6 +14,8 @@ const[errormeassage,seterrormeassage]=useState('');
 const[responsemeassage,setresponsemeassage]=useState([]);
 const[loading,setLoading]=useState(false);
 const[passwordshow,setPasswordshow]=useState(true);
+const[count,setCount]=useState(3);
+const navigate = useNavigate();
 
 const register=async()=>{
 
@@ -56,6 +58,12 @@ if(result.ok){
   setLoading(false);
   seterrormeassage('');
   setMeassage(response.success || "your registration is succefully completed");
+  setTimeout(() => {
+    
+    navigate('/');
+  }, 1000);
+
+
 }else{
   setMeassage('')
   setLoading(false);
@@ -72,13 +80,13 @@ if(result.ok){
 }
 return (
 
-  <div className="container">
+  <div className="containers">
     <div className="form-card">
       <h2 className="form-title">Register</h2>
 
       <div className="status">
         {!loading?errormeassage && <marquee behavior="flow" direction="left"><p className="error-message">{errormeassage}</p></marquee>:""}
-        {!loading?meassage && <p className="success-message">{meassage}</p>:""}
+        {!loading?meassage && <p className="success-message">{meassage} </p>:""}
         {loading === true ? (
           <img
             src="images/spinner.gif"
@@ -89,32 +97,32 @@ return (
           ""
         )}
 
-{responsemeassage&&!loading?
-  Object.entries(responsemeassage).map(([field, errors], index) => (
-    <div key={index} className="field-errors">
-      <ul>
-        {errors.map((error, errorIndex) => (
-          <li key={errorIndex} className="error-message">{error}</li>
-        ))}
-      </ul>
-    </div>
-  )):""
-}
+              {responsemeassage&&!loading?
+                Object.entries(responsemeassage).map(([field, errors], index) => (
+                  <div key={index} className="field-errors">
+                    <ul>
+                      {errors.map((error, errorIndex) => (
+                        <li key={errorIndex} className="error-message">{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )):""
+              }
 
       </div>
 
-      <form className="form" onSubmit={(e)=>{
-        e.preventDefault();
-        register();
-      }}>
-      <input
-  type="text"
-  value={firstname}
-  onChange={(e) => setFirstName(e.target.value)}
-  placeholder="First Name"
-  className="input-field"
-  required
-/>
+                   <form className="form" onSubmit={(e)=>{
+                     e.preventDefault();
+                     register();
+                   }}>
+                   <input
+               type="text"
+               value={firstname}
+               onChange={(e) => setFirstName(e.target.value)}
+               placeholder="First Name"
+               className="input-field"
+               required
+             />
 
 
         <input
@@ -134,7 +142,7 @@ return (
           className="input-field"
           required
         />
-<div className="pass">
+            <div className="pass">
 
         <input
           type={passwordshow?'password':""}
@@ -153,7 +161,7 @@ return (
         <input type="submit" className="register-button"/>
 
 
-        <Link to="/login"><button  className="register-button" id="res">Login</button></Link>
+        <Link to="/"><button  className="register-button" id="res">Login</button></Link>
       </form>
     </div>
 </div>

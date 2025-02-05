@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../css/login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 
 
@@ -11,6 +12,7 @@ export default function Login() {
   const [messageerror, seterrorMessage] = useState("");
   const[loading,setLoading]=useState(false);
   const[passwordshow,setPasswordshow]=useState(true);
+  const navigate =useNavigate()
   const login = async () => {
     if (!mobile || !password) {
       alert("Please fill all fields.");
@@ -37,6 +39,9 @@ export default function Login() {
       if (result.ok) {
         setLoading(false);
         setMessage(response.success || "You have successfully logged in.");
+        navigate('/home');
+
+
       } else {
         setLoading(false);
         seterrorMessage(response.unsuccess || "Login failed. Please try again.");
@@ -48,7 +53,7 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div className="containers">
       <div className="form-card">
         <h2 className="form-title">Login</h2>
 

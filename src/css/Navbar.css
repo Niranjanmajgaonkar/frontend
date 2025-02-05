@@ -80,3 +80,35 @@ border: 5px solid white;
 .navnames:hover {
   color: #f8f9fa; /* light color for nav items on hover */
 }
+.custom-dropdown .dropdown-menu {
+  background-color: #343a40 !important; /* Dark background */
+  border: none; /* Removes the border */
+}
+
+.custom-dropdown .dropdown-item {
+  color: white !important; /* White text */
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background-color: #495057 !important; /* Slightly lighter dark on hover */
+}
+
+.custom-dropdown .dropdown-menu {
+  background-color: #343a40 !important; /* Dark background */
+  border: none; /* Removes the border */
+}
+
+.custom-dropdown .dropdown-item {
+  color: white !important; /* White text */
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background-color: #495057 !important; /* Slightly lighter dark on hover */
+}
+
+.navmain{
+  display: flex
+  ;
+      align-items: center;
+  
+}

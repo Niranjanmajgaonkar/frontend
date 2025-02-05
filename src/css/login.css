@@ -1,5 +1,5 @@
 /* Container */
-.container {
+.containers {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,6 +106,6 @@
     align-items: center;
  }
  .pass input{
-    padding-right: 43%;
+    padding-right: 35%;
     margin-right: 10px;
  }
