@@ -23,6 +23,8 @@ export default function ProductProvider({ children }) {  // ✅ Create a Provide
   };
 
   return (
+
+    // Contextproduct this name are always use for the use the uploded products
     <Contextproduct.Provider value={{ products, errormeassage, fetchProduct }}>  
       {children}  {/* ✅ Now, all components inside App.js can access this context */}
     </Contextproduct.Provider>
