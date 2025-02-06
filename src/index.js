@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import ProductProvider from './component/ProductContext';  // ✅ Import Provider
-import { Userdetails } from './component/Login';  // ✅ Import Context
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -14,7 +13,10 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ProductProvider>  {/* ✅ Use ProductProvider to wrap the app */}
+
+          
           <App />
+
       </ProductProvider>
     </BrowserRouter>
   </React.StrictMode>

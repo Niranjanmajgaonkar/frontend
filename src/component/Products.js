@@ -6,7 +6,10 @@ import { Contextproduct } from './ProductContext';  // ✅ Import Context from s
 import Singleproduct from './Singleproduct';
 import CryptoJS from "crypto-js";
 
+
 const secretKey = "mySecretKey123";
+
+
 export default function Products() {
  
 
