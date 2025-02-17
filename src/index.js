@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import ProductProvider from './component/ProductContext';  // ✅ Import Provider
+import Addcart from './component/Addcart';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -13,9 +14,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ProductProvider>  {/* ✅ Use ProductProvider to wrap the app */}
+        <Addcart>
 
-          
+
           <App />
+        </Addcart>
 
       </ProductProvider>
     </BrowserRouter>

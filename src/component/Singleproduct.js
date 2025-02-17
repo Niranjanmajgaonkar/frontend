@@ -4,10 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import CryptoJS from "crypto-js";
 import { Contextproduct } from './ProductContext';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { cartContext } from './Addcart';
 
 export default function Singleproduct({  productid }) {
     const navigate = useNavigate();
+    const {cartitem,setCartitem}=useContext(cartContext);
+
     const secretKey = "mySecretKey123";
     const [show, setShow] = useState(false);
     const [showmainmodal, setMainmodal] = useState(false);
@@ -30,7 +32,10 @@ export default function Singleproduct({  productid }) {
         navigate('/home');
     };
 
-    const handleShow = () => setShow(true);
+    // this function happing the added product id in the our card
+    const handleShow = () =>{ setShow(true)
+        setCartitem((prev)=>[...prev,clickedproduct.productid])
+    };
 
     let productids = null;
     try {
@@ -99,11 +104,11 @@ export default function Singleproduct({  productid }) {
                                     {clickedproduct.price}
                                 </h3>
                                 <hr />
-                                <div className="btns" style={{ display: 'flex', marginTop: '10%', justifyContent: 'space-evenly', position: 'bottom' }}>
+                                <div className="btns" style={{ display: 'flex', marginTop: '10%', justifyContent: 'space-evenly', position: 'bottom',flexDirection:'row' }}>
                                     <Link to="/Buy" state={{ productid: clickedproduct.productid }}>
                                         <Button variant="warning">Buy Now</Button>
                                     </Link>
-                                    <Link state={{ productid: clickedproduct.productid }}>
+                                    <Link >
                                         <Button variant="warning" onClick={handleShow}>Add Cart</Button>
                                     </Link>
                                 </div>

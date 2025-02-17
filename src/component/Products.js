@@ -14,7 +14,7 @@ export default function Products() {
  
 
 
-  const { products, errormeassage, fetchProduct } = useContext(Contextproduct);  // ✅ Get data from Context
+  const { products, errormeassage, fetchProduct,mainpageloader } = useContext(Contextproduct);  // ✅ Get data from Context
   const [modalShow, setModalShow] = React.useState(false);
   const [singleproductid, setSingleproductid] =useState("");
 
@@ -37,16 +37,20 @@ export default function Products() {
   {/* modal for the pop up product.. */}
       {errormeassage && <marquee><h3>{errormeassage}</h3></marquee>}
    
+      {mainpageloader&&<img src="images/loadinganimination.gif" alt="mainpageloader" 
+      style={{height:'15%',width:'15%',display:'flex', justifySelf:'center',alignSelf:'center'}}/>
+      }
 
-      <Singleproduct
+            <Singleproduct
         show={modalShow}
         onHide={() => setModalShow(false)
         }
         productid={singleproductid}
-      />
+        />
 
 
 {/* all products div/// */}
+        {!mainpageloader&&
       <div className="allproducts" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(5, 1fr)', // 5 columns per row
@@ -95,7 +99,7 @@ export default function Products() {
           </Card>
         ))}
       </div>
-
+}
     </>
   );
 }

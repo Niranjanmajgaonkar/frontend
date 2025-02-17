@@ -1,0 +1,19 @@
+.main{
+    margin-top: 12vh;
+    margin-left: 3vw;
+}
+
+.name{
+    align-self: center;
+}
+
+.data{
+    display: flex;
+    justify-content: space-between;
+}
+.btns{
+    display: flex;
+flex-direction:column;
+justify-content: space-around;
+/* align-items: center; */
+}
