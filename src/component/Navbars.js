@@ -24,7 +24,9 @@ export default function Navbars() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" className="px-4 fixed-top">
+    <div style={{marginBottom:'6%'}}>
+
+      <Navbar bg="dark" variant="dark" expand="lg" className="px-4 fixed-top" >
 
         <Container fluid>
           {/* Navbar Brand */}
@@ -42,7 +44,7 @@ export default function Navbars() {
               <Form.Control
                 placeholder="Search..."
                 style={{ backgroundColor: 'white', color: 'black' }}
-              />
+                />
               <InputGroup.Text>
                 <img src="images/search (1).png" alt="search" className="surchicon" />
               </InputGroup.Text>
@@ -66,7 +68,7 @@ export default function Navbars() {
                   menuVariant="dark" // Ensures dark background
                   className="custom-dropdown"
                   show={show}
-                >
+                  >
                   <NavDropdown.Item href="#/action-1">Men's</NavDropdown.Item>
                   <NavDropdown.Item href="#/action-2">Women's</NavDropdown.Item>
                   <NavDropdown.Item href="#/action-3">Chaild's</NavDropdown.Item>
@@ -94,7 +96,7 @@ export default function Navbars() {
                   className="custom-dropdown navnames"
                   show={accountshow}
                   align="end"
-                >
+                  >
                   <NavDropdown.Item href="#/action-1">Profile</NavDropdown.Item>
                   <NavDropdown.Item href="#/action-2">Orders</NavDropdown.Item>
                   <NavDropdown.Item href="#/action-3">Logout</NavDropdown.Item>
@@ -110,6 +112,7 @@ export default function Navbars() {
 
 
 
+                  </div>
 
 
     </>

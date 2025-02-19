@@ -13,6 +13,8 @@ export default function Singleproduct({  productid }) {
     const secretKey = "mySecretKey123";
     const [show, setShow] = useState(false);
     const [showmainmodal, setMainmodal] = useState(false);
+    const [Qut, setQut] = useState(1);
+    const [customQut, setcustomQut] = useState();
 
 
      useEffect(() => {
@@ -90,7 +92,7 @@ export default function Singleproduct({  productid }) {
                     <Modal.Body>
                         <div className="main" style={{
                             display: 'flex', flexDirection: 'row',
-                            justifyContent: 'center', width: '100%'
+                            justifyContent: 'center', 
                         }}>
                             <div className="forimage" style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <img src={clickedproduct.imageurl} style={{ maxHeight: '80%' }} alt="Product" />
@@ -104,10 +106,84 @@ export default function Singleproduct({  productid }) {
                                     {clickedproduct.price}
                                 </h3>
                                 <hr />
-                                <div className="btns" style={{ display: 'flex', marginTop: '10%', justifyContent: 'space-evenly', position: 'bottom',flexDirection:'row' }}>
-                                    <Link to="/Buy" state={{ productid: clickedproduct.productid }}>
-                                        <Button variant="warning">Buy Now</Button>
-                                    </Link>
+    {/* this section is for blinking and qut display           */}
+    <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '90%',
+        justifyContent: 'space-between', // Ensure content aligns at the end
+        marginLeft:'15px'
+    }}>
+        <div className="so">
+            <label htmlFor="qut">QUT</label>
+            <select name="qut" id="qut" onChange={(key)=>{
+setQut(key.target.value)
+            }} >
+                
+                {clickedproduct.Quantity >=1 &&<option value="1">1</option>}
+                {clickedproduct.Quantity >=2 &&<option value="2">2</option>}
+                {clickedproduct.Quantity >=3 &&<option value="3">3</option>}
+                {clickedproduct.Quantity >=4 &&<option value="more">More</option>}
+            </select>
+            
+      {Qut === "more" ? (
+        <input style={{
+            marginTop:'10px'
+        }}
+            type="number" 
+            value={customQut} 
+            onChange={(e) => {
+    
+                setcustomQut(e.target.value)} 
+            }
+        />
+    ) : null
+            }
+
+            
+        </div>
+       {clickedproduct.Quantity == 0 ?
+       <p style={{ color: 'red', margin: 0 ,display:'flex', alignItems:'center'}}>
+       <div style={{
+           marginRight: '10px',
+           width: '10px',
+           height: '10px',
+           backgroundColor: 'red',
+           borderRadius: '50%',
+           animation: 'blink 1s infinite'
+        }}></div>
+         Out Of Stock</p>:
+         
+        <p style={{ color: 'green', margin: 0 ,display:'flex', alignItems:'center'}}>  
+        <div style={{
+           marginRight: '10px',
+           width: '10px',
+           height: '10px',
+           backgroundColor: 'green',
+           borderRadius: '50%',
+           animation: 'blink 1s infinite'
+        }}></div>    {clickedproduct.Quantity} Qut left</p>} {/* Removes extra margin */}
+    </div>
+
+    <style>
+        {`
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0; }
+            }
+        `}
+    </style>
+
+
+
+                                <div className="btns" style={{ display: 'flex',marginTop:'10%', justifyContent: 'space-evenly', position: 'bottom',flexDirection:'row' }}>
+                                    {!clickedproduct.Quantity == 0?
+
+                                    <Link  to="/order" state={{ productid: clickedproduct.productid ,qut:Qut=="more"?customQut:Qut}}>
+                                        <Button variant="warning" >Buy Now</Button>
+                                    </Link>:
+                                        <Button variant="warning" disabled>Buy Now</Button>
+}
                                     <Link >
                                         <Button variant="warning" onClick={handleShow}>Add Cart</Button>
                                     </Link>
@@ -117,6 +193,15 @@ export default function Singleproduct({  productid }) {
                     </Modal.Body>
                 </Modal>
             )}
+           <style>
+         {`
+            option{
+                width:'50px'
+            }
+         
+         `
+            }
+           </style>
     </>
     );
 }

@@ -1,19 +1,121 @@
-.main{
-    margin-top: 12vh;
-    margin-left: 3vw;
-}
-
-.name{
-    align-self: center;
-}
-
-.data{
+/* Cart Page Container */
+.cart-container {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+    height: 100vh;
 }
-.btns{
+
+/* Left side: Cart Products (75% width) */
+.main {
+    margin-left: 5vw;
+    flex: 2.5;
+    /* display: flex; */
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+/* Product Card Styling */
+.main .card {
+    width: 70%;
+    background: #3F4F44;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Body - Arrange Items Horizontally */
+.data {
     display: flex;
-flex-direction:column;
-justify-content: space-around;
-/* align-items: center; */
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Product Image */
+.image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+/* Product Details */
+.details {
+    flex-grow: 1;
+}
+
+.details .name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.details .price {
+    font-size: 16px;
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.details p {
+    font-size: 14px;
+    color: #ddd;
+}
+
+/* Buttons Section */
+.btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btns button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* Right side: Total Summary */
+.totalproductsummary {
+    width: 20%; /* Fixed width */
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 100%; /* Full viewport height */
+    background: rgb(63, 79, 68);
+    padding: 10px; /* Adjust padding for small width */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Moves content to the bottom */
+    align-items: center; /* Centers the content */
+}
+
+/* Total Summary Heading */
+.totalproductsummary h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Total Summary Details */
+.totalproductsummary p {
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Checkout Button */
+.totalproductsummary button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
 }

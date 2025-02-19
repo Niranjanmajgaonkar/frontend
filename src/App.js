@@ -6,6 +6,7 @@ import Navbars from './component/Navbars';
 import Home from './component/Home';
 import Cart from './component/Cart'; 
 import Account from './component/Account';
+import Ordermodal from './component/Ordermodal';
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
         <Route path='/account' element={<Account />} />
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/order" element={<Ordermodal />} />
       </Routes>
 
     </>

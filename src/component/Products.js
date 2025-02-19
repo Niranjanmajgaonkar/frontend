@@ -37,7 +37,7 @@ export default function Products() {
   {/* modal for the pop up product.. */}
       {errormeassage && <marquee><h3>{errormeassage}</h3></marquee>}
    
-      {mainpageloader&&<img src="images/loadinganimination.gif" alt="mainpageloader" 
+      {!errormeassage && mainpageloader && <img src="images/loadinganimination.gif" alt="mainpageloader" 
       style={{height:'15%',width:'15%',display:'flex', justifySelf:'center',alignSelf:'center'}}/>
       }
 
