@@ -98,7 +98,7 @@ export default function Navbars() {
                   align="end"
                   >
                   <NavDropdown.Item href="#/action-1">Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="#/action-2">Orders</NavDropdown.Item>
+                  <NavDropdown.Item href="/Order_details">Orders</NavDropdown.Item>
                   <NavDropdown.Item href="#/action-3">Logout</NavDropdown.Item>
                 </NavDropdown>
               </Nav.Item>

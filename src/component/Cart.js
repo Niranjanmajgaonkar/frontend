@@ -25,9 +25,28 @@ export default function Cart(props) {
   const [removecartfromdb, setRemovecartfromdb] = useState([]);
   const [reload, serReload] = useState(true);
   const [lgShow, setLgShow] = useState(false);
+  const [totalprice, setTotalprice] = useState(0);
+  const [productQuantities, setProductQuantities] = useState({});
+
+  const [totalavailble_p_p_id, setTotalavailble_p_p_id] = useState([]);
+  const [all_p_qut, setAll_p_qut] = useState({});
+  const [proced_yes_or_no, setProced_yes_or_no] = useState(false);
+
+  
+
 
 
   // {addcartproduct? setShow(true):setShow(false)}
+  // this section is devloped for if stock added more then  avaliblle this time they btn off
+  useEffect(() => {
+    let anyProductDisabled = addcartproduct.some((element) => 
+      element.Quantity !== 0 && element.Quantity < productQuantities[element.productid]
+    );
+  
+
+    setProced_yes_or_no(!anyProductDisabled);  // Disable "Proceed to Checkout" if any product is disabled
+  }, [totalprice, productQuantities, addcartproduct]); 
+  
 
   if (products.length === 0) {
     // this fetachproduct function is run whene the all productdata is not availble in the context
@@ -39,6 +58,22 @@ export default function Cart(props) {
 
   const addcartproductid = localStorage.getItem("cart") ?
     JSON.parse(localStorage.getItem("cart")) : [null].filter(Boolean);
+
+
+
+  // this section is  created for the create the array of the availble cart product to  transfrer this array 
+  // to order page
+  useEffect(() => {
+    setTotalavailble_p_p_id(
+      addcartproduct
+        .filter((item) => item.Quantity !== 0) // Filter only items with Quantity > 0
+        .map((item) => item.productid) // Extract product IDs
+    );
+
+
+  }, [addcartproduct]); // Depend on addcartproduct
+
+
 
 
 
@@ -63,7 +98,7 @@ export default function Cart(props) {
             // setCartitem(a1)
 
             localStorage.setItem("cartdatabase", JSON.stringify(a1)); // Store as JSON array
-
+        
 
 
 
@@ -149,6 +184,34 @@ export default function Cart(props) {
     }
   }, [addcartproduct]);
 
+  useEffect(() => {
+    const initialQuantities = {};
+    addcartproduct.forEach((product) => {
+      initialQuantities[product.productid] = 1;
+    });
+    setProductQuantities(initialQuantities);
+  }, [addcartproduct]);
+
+  const updateQuantity = (productid, action) => {
+    setProductQuantities((prev) => {
+      const newQuantity = action === "increase" ? prev[productid] + 1 : prev[productid] - 1;
+      return { ...prev, [productid]: Math.max(1, newQuantity) };
+    });
+  };
+
+
+  // this section is devloped for the total price and quantiity of the cart display section
+  useEffect(() => {
+    let total = 0;
+    addcartproduct.forEach((element) => {
+      const quantity = productQuantities[element.productid] || 1; // Default to 1
+      if (element.Quantity !== 0) {
+
+        total += quantity * element.price;
+      }
+    });
+    setTotalprice(total);
+  }, [addcartproduct, productQuantities]); // Depend on cart products & quantities
 
   return (
     <>
@@ -182,6 +245,9 @@ export default function Cart(props) {
 
           {addcartproduct && addcartproduct.map((element, index) => (
 
+
+
+
             <Card
               key={index}
               text={variant.toLowerCase() === "light" ? "dark" : "white"}
@@ -195,36 +261,52 @@ export default function Cart(props) {
                   alignItems: 'center',
                   width: '99%',
                   justifyContent: 'flex-end', // Ensure content aligns at the end
-                  marginBottom: '-26px',
+
                 }}>
 
-                  {!element.Quantity==0 && 
-                  /* in this section here is define the quantity section */
-                    <div className="qut" style={{
-                      display: 'flex', flexDirection: 'row'
-                      , justifyContent: 'center', alignItems: 'center'
-                      ,marginRight:'70px'
-                    }}>
 
-                      <img src="images/minus (1).svg" alt="-" style={{ width: '20px'
-                        ,marginRight:'10px',
-                        height: '20px' }} />
-                      
-                      <label htmlFor="" style={{height:'30px',}}>
-                        <input type="text" placeholder='15'
-                      style={{
-                      height:'100%',
-                      width:'70px',
-                      display:'flex',
-                      justifyContent:'center',
-                      textAlign:'center',
-                        margin: '0px 15px 0px 10px'}}
-                       />                
-                      </label>
-                      <img src="images/plus.svg" alt="+" style={{ width: '20px', height: '20px' }} />
-                    </div>
-                    
+
+                  {/* this section is devloped for the if quantity add more than availbel here is diplay meassage */}
+                 {
+                 !element.Quantity == 0 &&
+                 element.Quantity<productQuantities[element.productid]?
+                  <p style={{
+                    color:'cyan',marginRight:'30px'
+                  }}>Your Quantity is more than availble </p>
+                
+                  :""
+                
                 }
+                  {!element.Quantity == 0 &&
+                  
+                    <div className="qut" style={{ marginRight: '30px' }}>
+                      <button
+                        onClick={() => updateQuantity(element.productid, "decrease")}
+                        style={{
+                          background: 'none', border: 'none',
+
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <img src="images/minus.svg" alt="-" style={{ width: '20px', height: '20px', marginRight: '10px' }} />
+                      </button>
+                      <input
+                        type="text"
+                        value={productQuantities[element.productid] || 1}
+                        readOnly
+                        style={{ width: '70px', textAlign: 'center', margin: '0 10px' }}
+                      />
+                      <button
+                        onClick={() => updateQuantity(element.productid, "increase")}
+                        style={{
+                          background: 'none', border: 'none'
+                          , cursor: 'pointer'
+                        }}
+                      >
+                        <img src="images/plus.svg" alt="+" style={{ width: '20px', height: '20px' }} />
+                      </button>
+                    </div>
+                  }
                   <div style={{
                     marginRight: '10px',
                     width: '10px',
@@ -246,10 +328,16 @@ export default function Cart(props) {
                   </style>
                 </div>
 
+
               }
+
+
+              {/* here is this updating the total cart price */}
+
               <Card.Body className='data'>
                 <div className="image">
                   <img src={element.imageurl} alt="product image"
+
                     style={{ width: '150px', height: '150px', borderRadius: '10px' }} />
                 </div>
                 <div className="details">
@@ -258,15 +346,17 @@ export default function Cart(props) {
                   <Card.Text>{element.description}</Card.Text>
                 </div>
                 <div className="btns">
-                  {!element.Quantity == 0 ?
-                    <Link to='/order' state={{ productid: element.productid }}>
+
+                  {!element.Quantity == 0 && element.Quantity>=productQuantities[element.productid]? 
+                    <Link to='/order' state={{ productid: element.productid, qut: productQuantities[element.productid] }}>
                       <Button variant="warning">Buy Now</Button>
                     </Link>
-                    : <Button variant="warning" disabled>Buy Now</Button>}
+                    : <Button variant="warning" disabled className='currntstate'>Buy Now</Button>}
                   <Button variant="info" onClick={() => remove(element.productid)}>Remove</Button>
                 </div>
               </Card.Body>
             </Card>
+
           ))}
         </div>
 
@@ -276,8 +366,15 @@ export default function Cart(props) {
 
             <marquee behavior="flow" direction="left"><h2>Total Summary</h2></marquee>
             <p><strong>Total Products:</strong> {addcartproduct.length}</p>
-            <p><strong>Total Price:</strong> ₹{addcartproduct.reduce((sum, item) => sum + item.price, 0)}</p>
-            <Button variant="success">Proceed to Checkout</Button>
+
+            <p><strong>Total Price:</strong> ₹{totalprice && totalprice}</p>
+            {totalprice !== 0 && proced_yes_or_no==true ?
+              <Link to='/order' state={{ all_p_ids: totalavailble_p_p_id, allqut: productQuantities }}>
+                <Button variant="success" style={{ backgroundColor: '#ffc107', color: 'black' }}>Proceed to Checkout</Button>
+              </Link>
+              :
+              <Button variant="success" disabled style={{ backgroundColor: '#ffc107', color: 'black' }}>Proceed to Checkout</Button>
+            }
           </div>
         }
       </div>

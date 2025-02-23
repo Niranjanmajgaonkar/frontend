@@ -9,7 +9,6 @@ export default function Addcart(props) {
     const [allcartproduct,setAllcartproduct]=useState([]);
     // in this cart item there is store the product id not the cart details
     const [cartitem, setCartitem] = useState([]);
-    console.log(cartitem)
 
     const products = useContext(Contextproduct);
 
@@ -22,10 +21,7 @@ export default function Addcart(props) {
     }, [cartitem]);
     
 
-    useEffect(() => {
-        console.log("Updated Cart:", allcartproduct);
-    }, [allcartproduct]);
-
+   
 
 
     // here is storing the context add cart items into the localStorage
@@ -48,7 +44,6 @@ export default function Addcart(props) {
          
             const handleBeforeUnload = () => {
 
-                console.log("User is leaving the page!");
     
                 // Retrieve and parse stored cart data
                 const storedCart = localStorage.getItem("cart");
@@ -61,7 +56,7 @@ export default function Addcart(props) {
                         body: JSON.stringify(cartArray ), // Send as JSON array
                         keepalive: true, // Ensures request completes before page unload
                     })
-                    .then(() => console.log("Cart data sent successfully"))
+            
                     .catch((error) => console.error("Fetch error:", error));
                 }
             };

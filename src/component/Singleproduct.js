@@ -35,8 +35,10 @@ export default function Singleproduct({  productid }) {
     };
 
     // this function happing the added product id in the our card
-    const handleShow = () =>{ setShow(true)
+    const handleShow = () =>{ 
+        setShow(true)
         setCartitem((prev)=>[...prev,clickedproduct.productid])
+        
     };
 
     let productids = null;
