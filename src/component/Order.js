@@ -12,10 +12,63 @@ export default function Order({ children }) {
   const [helpModalShow, setHelpModalShow] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelmeassage, setCancelmessage] = useState(false);
+  const [cancel_send_loading, setcancel_send_loading] = useState(false);
+  const [help_concern, setHelpconcern] = useState('');
+
+
+  // this state for the help meassage response pop up 
+  const [show, setShow] = useState(false);
+  const [helploader, setHelploader] = useState(false);
+  const[help_response,setHelp_response]=useState('')
+  const handleClose = () =>{ setShow(false)
+     
+  };
+  const handleShow = () =>{ setShow(true)
+    setHelpModalShow(false)
+  };
+
 
   const closeModal = () => setModalShow(false);
-  const closeHelpModal = () => setHelpModalShow(false);
+
+
+  const closeHelpModal = () =>{ 
+    setHelpModalShow(false)
+  
+    send_help_data()
+    // handleClose()
+  };
+
+
   const closeCancelModal = () => setShowCancelModal(false);
+
+
+const send_help_data=async()=>{
+  if(help_concern.length){
+  setHelploader(true)
+  const result = await fetch("http://127.0.0.1:8000/api/help_request", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({order_id:selectedOrder.order_id,concern:help_concern}), // Send as JSON array
+  });
+
+  const response = await result.json(); // Parse the response as JSON
+  setHelp_response(response)
+  setHelploader(false)
+  
+  if(response.success){
+    console.log("success")
+    setHelpconcern('')
+    
+  }else{
+
+  console.log('fdf')
+  setHelpconcern('')
+}
+  }
+  
+}
 
   useEffect(() => {
     const storedOrders = localStorage.getItem("orders_data");
@@ -47,6 +100,7 @@ export default function Order({ children }) {
   const handleCancelOrder = async() => {
     const id =selectedOrder?.order_id;
       
+    setcancel_send_loading(true)
         const result = await fetch("http://127.0.0.1:8000/api/cancelorder", {
           method: "POST",
           headers: {
@@ -56,35 +110,82 @@ export default function Order({ children }) {
         });
   
         const response = await result.json(); // Parse the response as JSON
-        console.log(response)
+
      if(response.success){
+      setcancel_send_loading(false)
       setCancelmessage(true)
+      fetching()
      }
    
-
-    // closeCancelModal();
-    // closeModal()
+setTimeout(() => {
+  
+  closeCancelModal();
+  closeModal()
+  setCancelmessage(false)
+  fetching()
+}, 3000);
   };
 
   return (
 
 
         <div className="container mt-4">
- 
+
+
+{/* this modal can be display the meassage of the help btn send clicked this time response can be display by this modal */}
+      <Modal show={show} onHide={handleClose}>
+         
+        <Modal.Header closeButton  style={{backgroundColor:help_response&&help_response.unsuccess?'red':''}}>
+          <Modal.Title>
+       {helploader&&<img src="images/orderplaceloader.gif" alt="loading"style={{width:'100px',height:'100px', justifySelf:'center'}}/>}
+
+          {help_response&&help_response.success? 'Succesfully Send':''}
+          {help_response&&help_response.unsuccess? 'Something Error':''}
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+       {helploader&&<img src="images/orderplaceloader.gif" alt="loading"style={{width:'100px',height:'100px', justifySelf:'center'}}/>}
+          {help_response&&help_response.success? 'Your Concern is succefully Noted We provide best Resolution soon ... Thank You ':
+        ''}
+        
+          {help_response&&help_response.unsuccess? ' You may be already sended any one concern regarding to same order ... so we will solve this concern first':
+        ''}
+        
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+         
+        </Modal.Footer>
+      </Modal>
+
+
+
     {/* this section is decribe the total order list in the order section */}
       <div className="order-list">
         {orderLocalStorage &&
           orderLocalStorage.map((order, index) => (
-            <Card key={index} className="order-card" onClick={() => displayOrderDetails(order)}>
-              <Card.Header className="order-header">
+            <Card key={index} className="order-card" style={{marginBottom:'5vh'}} onClick={() => displayOrderDetails(order)}>
+              <Card.Header className="order-header" style={{
+                backgroundColor:order.status==0?'red':order.status==2?'navy':order.status==3?'green':''
+              }}>
                 Order Date: {order.created_at.split("T")[0]} - order_id -{order.order_id}
               </Card.Header>
               <Card.Body className="order-body">
                 <div className="order-details">
                   <Card.Title>{order.product_name}</Card.Title>
                   <Card.Text>Price: ₹ {order.p_price}</Card.Text>
-                  <Button variant="primary" onClick={() => displayOrderDetails(order)}>
-                    View Details
+                  <Button variant="primary" onClick={() => displayOrderDetails(order)} 
+                  style={{backgroundColor:order.status==0?'red':order.status==2?'navy':order.status==3?'green':''
+
+                  }}>
+                  {order.status==0&& 'Order Cancceled'}
+                  {order.status==1&& 'Order Proceed'}
+                  {order.status==2&& 'Order Shipped'}
+                  {order.status==3&& 'Order Deliverd'}
+                    
                   </Button>
                 </div>
                 <div className="order-image">
@@ -94,6 +195,8 @@ export default function Order({ children }) {
             </Card>
           ))}
       </div>
+
+
 
       {/* Order Details Modal means this modal is decribe the total details of the order */}
       <Modal show={modalShow} onHide={closeModal} centered>
@@ -126,9 +229,13 @@ export default function Order({ children }) {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={() => setShowCancelModal(true)}>
+         
+        {selectedOrder && selectedOrder.status==0 | selectedOrder.status==3?
+          '' :
+          <Button variant="danger"  onClick={() => setShowCancelModal(true)}>
             Cancel Order
           </Button>
+          }
           <Button variant="info" onClick={() => {
             closeModal();
             setHelpModalShow(true);
@@ -138,15 +245,17 @@ export default function Order({ children }) {
         </Modal.Footer>
       </Modal>
 
+
+
       {/* Cancel Order Confirmation Modal */}
 
-      
       {cancelmeassage &&
       <Modal show={showCancelModal} onHide={closeCancelModal} backdrop="static" keyboard={false}>
         <Modal.Header closeButton style={{ backgroundColor: "red" }}>
           <Modal.Title>Order Cancellation Succefull</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+
           <img src="images/success.gif" alt="success"  style={{width:'100px',height:'100px'}} />
 <p>order succefully cancel </p>
         </Modal.Body>
@@ -154,11 +263,19 @@ export default function Order({ children }) {
       </Modal>
 }
 {!cancelmeassage &&
-<Modal show={showCancelModal} onHide={closeCancelModal} backdrop="static" keyboard={false}>
+<Modal show={showCancelModal} onHide={closeCancelModal} backdrop="static"
+ keyboard={false}>
         <Modal.Header closeButton style={{ backgroundColor: "red" }}>
           <Modal.Title>Cancel Order</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Do you really want to cancel your order? 😞</Modal.Body>
+       
+        <Modal.Body style={{display:'flex', justifyContent:'center'}}>
+        {cancel_send_loading ? <img src="images/orderplaceloader.gif" alt="loading" 
+        style={{width:'100px',height:'100px', justifySelf:'center'}}/>
+        :
+       '   Do you really want to cancel your order? 😞 '
+      }
+       </Modal.Body>
         <Modal.Footer style={{ borderBottom: "4px solid red" }}>
           <Button variant="secondary" onClick={closeCancelModal}>No</Button>
           <Button variant="danger" onClick={handleCancelOrder}>Yes, Cancel</Button>
@@ -170,16 +287,21 @@ export default function Order({ children }) {
       {/* Help Modal */}
       <Modal show={helpModalShow} onHide={closeHelpModal} size="lg" centered>
         <Modal.Header closeButton>
-          <Modal.Title>Need Help?</Modal.Title>
+          <Modal.Title>Need Help?  Order_id - {selectedOrder&&selectedOrder.order_id}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>How can we assist you?</h4>
-<textarea name="help" placeholder="Describe Your Concern Here" style={{width:'100%',height:'20vh'}} id="">
+<textarea required name="help" placeholder="Describe Your Concern Here" style={{width:'100%',height:'20vh'}}
+onChange={(key)=>{setHelpconcern(key.target.value)} } 
+value={help_concern}
+id="">
 
 </textarea>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={closeHelpModal}>Send</Button>
+          <Button variant="success" onClick={()=>{closeHelpModal()
+              handleShow()
+          }}>Send</Button>
         </Modal.Footer>
       </Modal>
 

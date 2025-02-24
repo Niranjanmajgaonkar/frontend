@@ -5,18 +5,53 @@ import { Contextproduct } from './ProductContext';  // ✅ Import Context from s
 
 import Singleproduct from './Singleproduct';
 import CryptoJS from "crypto-js";
+import { useLocation } from 'react-router-dom';
 
 
 const secretKey = "mySecretKey123";
 
 
 export default function Products() {
- 
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  
+  // this one  line get data form the url of search by user
+  const searchQuery = searchParams.get("search"); // Get search term from URL
+  
+  
+  // this one  line get data form the url of category selectred  by user
+  const searchQuerycategory = searchParams.get("category"); // Get search term from URL
+
 
 
   const { products, errormeassage, fetchProduct,mainpageloader } = useContext(Contextproduct);  // ✅ Get data from Context
   const [modalShow, setModalShow] = React.useState(false);
   const [singleproductid, setSingleproductid] =useState("");
+  const [filter_products, setFilter_products] =useState([]);
+
+
+  // this section is filter out the search box element products
+  useEffect(() => {
+    setFilter_products(
+      products.filter((product) => 
+        product.name && searchQuery ? 
+        product.name|product.description.toLowerCase().includes(searchQuery.toLowerCase()) : false
+      )
+    );
+  }, [searchQuery, products]); // ✅ Dependencies ensure dynamic updates
+  
+  // this section filter out the category selected products
+  useEffect(() => {
+    setFilter_products(
+      products.filter((product) => 
+        product.p_category && searchQuerycategory ? 
+        product.p_category.toLowerCase().includes(searchQuerycategory.toLowerCase()) : false
+      )
+    );
+  }, [searchQuerycategory, products]); // ✅ Dependencies ensure dynamic updates
+  
+
 
   useEffect(() => {
     if (products.length === 0) {   // ✅ Prevent API call if data is already available
@@ -60,7 +95,9 @@ export default function Products() {
       }}>
 
 {/* here map function can be display the single products in the  */}
-        {products.map((element, index) => (
+
+
+{(filter_products && filter_products.length > 0 ? filter_products : products).map((element, index) => (
           
           <Card key={index} className='' data-productId={
             CryptoJS.AES.encrypt(element.productid.toString(), secretKey).toString()

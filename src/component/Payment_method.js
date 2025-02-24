@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 import { Contextproduct } from './ProductContext';
+import { ContextOrder } from './OrderProvider';
 
 
 export default function PaymentMethod() {
@@ -19,6 +20,7 @@ export default function PaymentMethod() {
   const[meassage,setmeassage]=useState();
   const handleClose = () => setShow(false);
   const { fetchProduct } = useContext(Contextproduct);
+  const { fetchOrders } = useContext(ContextOrder);
 
 
   const location = useLocation();
@@ -28,10 +30,10 @@ export default function PaymentMethod() {
   {success | unsuccess &&
     setTimeout(() => {
       setLoader(false)
-      navigate("/home");
       // window.location.reload();
       fetchProduct();
-   
+      fetchOrders();
+      navigate("/Order_details");
     }, 6000)
   }
   const handlePayment = () => {
