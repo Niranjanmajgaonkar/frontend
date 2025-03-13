@@ -97,7 +97,7 @@ export default function Singleproduct({  productid }) {
                             justifyContent: 'center', 
                         }}>
                             <div className="forimage" style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <img src={clickedproduct.imageurl} style={{ maxHeight: '80%' }} alt="Product" />
+                                <img src={clickedproduct.imageurl} style={{ maxHeight: '80%' ,width:'90%' }} alt="Product" />
                             </div>
                             <div className="forproductdetails" style={{ width: '50%' }}>
                                 <h3 style={{ justifySelf: 'center' }}>{clickedproduct.name}</h3>
