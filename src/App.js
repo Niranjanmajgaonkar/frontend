@@ -9,6 +9,8 @@ import Account from './component/Account';
 import Ordermodal from './component/Ordermodal';
 import Payment_method from './component/Payment_method';
 import Order from './component/Order';
+import UserProfileDetails from './component/UserProfileDetails';
+
 
 function App() {
   const location = useLocation();
@@ -23,7 +25,9 @@ function App() {
         <Route path='/account' element={<Account />} />
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/profile" element={<UserProfileDetails />} />
         <Route path="/order" element={<Ordermodal />} />
+
 
         {/* ✅ Wrap Payment_method inside OrderProvider */}
         <Route path="/payment" element={

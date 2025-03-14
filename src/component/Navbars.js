@@ -124,9 +124,9 @@ export default function Navbars() {
                   show={accountshow}
                   align="end"
                   >
-                <NavDropdown.Item as={Link} to="/action-1">Profile</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
 <NavDropdown.Item as={Link} to="/Order_details">Orders</NavDropdown.Item>
-<NavDropdown.Item as={Link} to="/action-3">Logout</NavDropdown.Item>
+<NavDropdown.Item as={Link} to="/">Logout</NavDropdown.Item>
 
                 </NavDropdown>
               </Nav.Item>
